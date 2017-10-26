@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -22,7 +23,8 @@ public class DataLoadTest extends TestCase {
     protected void setUp() throws Exception {
     	super.setUp();
     	prop =  new Properties();
-    	prop.load(new FileInputStream("config.properties"));
+    	InputStream is = getClass().getClassLoader().getResourceAsStream("config.properties");
+    	prop.load(is);
     	dataset = new File(prop.getProperty("dataset.dir")); 
     }
 
@@ -64,7 +66,7 @@ public class DataLoadTest extends TestCase {
         System.out.print("Cantidad de filas para el estudiante stu_e41db96ccd con la habilidad \'C    onvert across system\": ");
         System.out.println(cant);
 
-        File fichero = new File("${PROJECT_LOC}/datasets/rows.txt"/*"/home/vazquez/Desktop/rows.txt"*/);
+        File fichero = new File(prop.getProperty("rows.dir"));
         PrintWriter pw = new PrintWriter(new FileOutputStream(fichero));
         pw.println("ProblemName\t\tCorrects\tIncorrects\tCorrectFirstAtemp");
         for(DataSetRow row: dl.getDataSetRows()){
@@ -92,7 +94,7 @@ public class DataLoadTest extends TestCase {
 
     public void testLoadStudentsIdSingleFile() throws IOException {
         DataLoad dl =new DataLoad(dataset);
-        File fichero = new File("${PROJECT_LOC}/datasets/studentsID.txt");
+        File fichero = new File(prop.getProperty("studentsid.dir"));
         Set<String> studentsId = dl.loadStudentsIdSingleFile(fichero);
         assertEquals(3310,studentsId.size());
         System.out.println(studentsId.size());
