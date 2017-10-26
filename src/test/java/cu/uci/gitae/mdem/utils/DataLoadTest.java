@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +15,16 @@ import java.util.*;
  */
 public class DataLoadTest extends TestCase {
 
-    private File dataset = new File("/media/Datos/PROYECTO/Datasets/kddcup_challenge/algebra_2008_2009_train.txt");
+    private Properties prop;
+    private File dataset;
+    
+    @Override
+    protected void setUp() throws Exception {
+    	super.setUp();
+    	prop =  new Properties();
+    	prop.load(new FileInputStream("config.properties"));
+    	dataset = new File(prop.getProperty("dataset.dir")); 
+    }
 
     public void testLoadDataSetByStudent() throws Exception {
         long init, finish;
@@ -54,7 +64,7 @@ public class DataLoadTest extends TestCase {
         System.out.print("Cantidad de filas para el estudiante stu_e41db96ccd con la habilidad \'C    onvert across system\": ");
         System.out.println(cant);
 
-        File fichero = new File("/home/vazquez/Desktop/rows.txt");
+        File fichero = new File("${PROJECT_LOC}/datasets/rows.txt"/*"/home/vazquez/Desktop/rows.txt"*/);
         PrintWriter pw = new PrintWriter(new FileOutputStream(fichero));
         pw.println("ProblemName\t\tCorrects\tIncorrects\tCorrectFirstAtemp");
         for(DataSetRow row: dl.getDataSetRows()){
@@ -82,7 +92,7 @@ public class DataLoadTest extends TestCase {
 
     public void testLoadStudentsIdSingleFile() throws IOException {
         DataLoad dl =new DataLoad(dataset);
-        File fichero = new File("/home/angel/PhDdata/studentsID.txt");
+        File fichero = new File("${PROJECT_LOC}/datasets/studentsID.txt");
         Set<String> studentsId = dl.loadStudentsIdSingleFile(fichero);
         assertEquals(3310,studentsId.size());
         System.out.println(studentsId.size());

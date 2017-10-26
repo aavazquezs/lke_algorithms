@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -21,16 +20,16 @@ public class DataSaveTest extends TestCase {
         Set<String> ids = dl.loadStudentsId();
         studentsSet.addAll(ids);
         DataSave ds = new DataSave();
-        File fichero = new File("/home/angel/PhDdata/studentsID.txt");
+        File fichero = new File("${PROJECT_LOC}/datasets/studentsID.txt");
         ds.saveStudentsIds(fichero,ids);
     }
 
     public void testSaveStudentSkillsById() throws IOException {
         DataLoad dl = new DataLoad(dataset);
-        String folder = "/home/angel/PhDdata/studentsSkills/";
+        String folder = "${PROJECT_LOC}/datasets/studentsSkills/";
         DataSave ds = new DataSave();
-        PrintWriter pw;
-        File sset = new File("/home/angel/PhDdata/studentsID.txt");
+        //PrintWriter pw;
+        File sset = new File("${PROJECT_LOC}/datasets/studentsID.txt");
         studentsSet = dl.loadStudentsIdSingleFile(sset);
         for (String student: studentsSet) {
             File fichero = new File(folder+student+".txt");
